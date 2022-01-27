@@ -4,6 +4,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { fileURLToPath } from 'url'
 import { resolve, dirname } from 'path'
+import { mkdirSync, existsSync } from 'fs'
 import fileUpload from 'express-fileupload'
 import authRouter from './routes/auth.route.js'
 import fileRouter from './routes/file.route.js'
@@ -20,8 +21,8 @@ const { blue, red, gray, green } = chalk
 const app = express()
 const PORT = process.env.PORT ?? config.get('PORT')
 
-app.use(cors)
 app.use(filePath(resolve(__dirname, 'files')))
+app.use(cors)
 app.use(json())
 app.use(fileUpload({}))
 app.use('/api/auth', authRouter)
@@ -33,6 +34,10 @@ const start = async () => {
 		connect(config.get('dbURL'), () => {
 			console.log('Connected to DB')
 		})
+
+		if (!existsSync('files')) {
+			mkdirSync('files')
+		}
 
 		app.listen(PORT, () => console.log(blue('Listening on port: ' + PORT)))
 	} catch (err) {
