@@ -1,5 +1,4 @@
 import fs from 'fs'
-import config from 'config'
 import File from '../models/File.js'
 
 const { mkdirSync, existsSync, rmdirSync, unlinkSync } = fs
@@ -9,7 +8,7 @@ class FileService {
 		return `${req.filePath}/${user}/${path}`
 	}
 	createDir (req, file) {
-		const filePath = this.getPath(req, file)
+		const filePath = `${req.filePath}/${file.user}/${file.path}`
 		return new Promise((resolve, reject) => {
 			try {
 				if (!existsSync(filePath)) {
