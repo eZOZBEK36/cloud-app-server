@@ -5,11 +5,11 @@ import File from '../models/File.js'
 const { mkdirSync, existsSync, rmdirSync, unlinkSync } = fs
 
 class FileService {
-	getPath({ user, path }) {
-		return `${config.get('filePath')}/${user}/${path}`
+	getPath (req, { user, path }) {
+		return `${req.filePath}/${user}/${path}`
 	}
-	createDir(file) {
-		const filePath = `${config.get('filePath')}/${file.user}/${file.path}`
+	createDir (req, file) {
+		const filePath = this.getPath(req, file)
 		return new Promise((resolve, reject) => {
 			try {
 				if (!existsSync(filePath)) {
@@ -23,13 +23,13 @@ class FileService {
 			}
 		})
 	}
-	deleteFile(file) {
-		const path = this.getPath(file)
+	deleteFile (req, file) {
+		const path = this.getPath(req, file)
 		if (file.type === 'dir') rmdirSync(path)
 		else unlinkSync(path)
 	}
-	getStaticPath({ user }) {
-		return `${config.get('staticPath')}/${user}`
+	getStaticPath (req, { user }) {
+		return `${req.filePath}/${user}`
 	}
 }
 

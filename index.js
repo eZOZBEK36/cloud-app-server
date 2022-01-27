@@ -1,11 +1,13 @@
 import chalk from 'chalk'
 import config from 'config'
 import express from 'express'
+import { resolve } from 'path'
 import mongoose from 'mongoose'
 import fileUpload from 'express-fileupload'
 import authRouter from './routes/auth.route.js'
 import fileRouter from './routes/file.route.js'
 import cors from './middleware/cors.middleware.js'
+import filePath from './middleware/filepath.middleware.js'
 
 const { json } = express
 const { connect } = mongoose
@@ -19,6 +21,7 @@ app.use(json())
 app.use(fileUpload({}))
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
+app.use(filePath(resolve(__dirname, 'files')))
 app.use('/static', express.static('static'))
 
 const start = async () => {

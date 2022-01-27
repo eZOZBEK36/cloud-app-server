@@ -18,10 +18,10 @@ class FileController {
 			const parentFile = await File.findOne({ _id: parent })
 			if (!parentFile) {
 				file.path = name
-				await fileService.createDir(file)
+				await fileService.createDir(req, file)
 			} else {
 				file.path = `${parentFile.path}/${file.name}`
-				await fileService.createDir(file)
+				await fileService.createDir(req, file)
 				parentFile.childs.push(file._id)
 				await parentFile.save()
 			}
@@ -89,10 +89,10 @@ class FileController {
 
 			let path
 			if (parent) {
-				path = `${config.get('filePath')}/${user._id}/${parent.path}/${file.name
+				path = `${req.filePath}/${user._id}/${parent.path}/${file.name
 					}`
 			} else {
-				path = `${config.get('filePath')}/${user._id}/${file.name}`
+				path = `${req.filePath}/${user._id}/${file.name}`
 			}
 
 			if (existsSync(path))
@@ -129,7 +129,7 @@ class FileController {
 				_id: req.query.id,
 				user: req.user.id,
 			})
-			const path = getPath(file)
+			const path = getPath(req, file)
 			if (existsSync(path)) {
 				return res.download(path, file.name)
 			}
@@ -148,7 +148,7 @@ class FileController {
 			if (!file) {
 				return res.status(400).json({ message: 'File not Found' })
 			}
-			fileService.deleteFile(file)
+			fileService.deleteFile(req, file)
 			await file.remove()
 			return res.status(200).json({ message: 'File was deleted' })
 		} catch (err) {
@@ -175,7 +175,7 @@ class FileController {
 			if (!existsSync(getStaticPath({ user: user._id }))) {
 				mkdirSync(getStaticPath({ user: user._id }))
 			}
-			file.mv(getStaticPath({ user: user._id }) + '/' + avatarName)
+			file.mv(getStaticPath(req, { user: user._id }) + '/' + avatarName)
 			user.avatar = avatarName
 			await user.save()
 			return res.json(user)
@@ -187,7 +187,7 @@ class FileController {
 	async deleteAvatar (req, res) {
 		try {
 			const user = await User.findById(req.user.id)
-			unlinkSync(getStaticPath({ user: req.user.id }) + '/' + user.avatar)
+			unlinkSync(getStaticPath(req, { user: req.user.id }) + '/' + user.avatar)
 			user.avatar = ''
 			await user.save()
 			return res.json(user)
