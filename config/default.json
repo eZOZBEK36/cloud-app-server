@@ -1,0 +1,7 @@
+{
+	"PORT": 8000,
+	"filePath": "/files",
+	"staticPath": "/static",
+	"secretKey": "mernstackezozbek",
+	"dbURL": "mongodb+srv://root:root@cluster0.c15eq.mongodb.net/clouddisk?retryWrites=true&w=majority"
+}
