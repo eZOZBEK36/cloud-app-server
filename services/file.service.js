@@ -8,9 +8,7 @@ class FileService {
 		return `${req.filePath}/${user}/${path}`
 	}
 	createDir (req, file) {
-		console.log(req.filePath)
-		console.log(file)
-		const filePath = `${req.filePath}/${file.user}/${file.path}`
+		const filePath = this.getPath(req, file)
 		return new Promise((resolve, reject) => {
 			try {
 				if (!existsSync(filePath)) {
@@ -20,6 +18,7 @@ class FileService {
 					return reject({ message: 'File already exist' })
 				}
 			} catch (err) {
+				console.log(err)
 				return reject({ message: 'File error' })
 			}
 		})

@@ -20,12 +20,12 @@ const { blue, red, gray, green } = chalk
 const app = express()
 const PORT = process.env.PORT ?? config.get('PORT')
 
+app.use(filePath(resolve(__dirname, 'files')))
 app.use(cors)
 app.use(json())
 app.use(fileUpload({}))
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
-app.use(filePath(resolve(__dirname, 'files')))
 app.use('/static', express.static('static'))
 
 const start = async () => {
