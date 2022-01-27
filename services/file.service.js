@@ -8,7 +8,7 @@ class FileService {
 		return `${req.filePath}/${user}/${path}`
 	}
 	createDir (req, file) {
-		const filePath = this.getPath(req, file)
+		const filePath = `${req.filePath}/${file.user}/${file.path}`
 		return new Promise((resolve, reject) => {
 			try {
 				if (!existsSync(filePath)) {
