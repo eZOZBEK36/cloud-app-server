@@ -1,13 +1,17 @@
 import chalk from 'chalk'
 import config from 'config'
 import express from 'express'
-import { resolve } from 'path'
 import mongoose from 'mongoose'
+import { fileURLToPath } from 'url'
+import { resolve, dirname } from 'path'
 import fileUpload from 'express-fileupload'
 import authRouter from './routes/auth.route.js'
 import fileRouter from './routes/file.route.js'
 import cors from './middleware/cors.middleware.js'
 import filePath from './middleware/filepath.middleware.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const { json } = express
 const { connect } = mongoose
@@ -27,7 +31,7 @@ app.use('/static', express.static('static'))
 const start = async () => {
 	try {
 		connect(config.get('dbURL'), () => {
-			console.log(green('Connected to DB'))
+			console.log('Connected to DB')
 		})
 
 		app.listen(PORT, () => console.log(blue('Listening on port: ' + PORT)))
