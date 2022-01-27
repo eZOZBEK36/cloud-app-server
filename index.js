@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import chalk from 'chalk'
 import config from 'config'
 import express from 'express'
@@ -25,7 +23,7 @@ app.use('/static', express.static('static'))
 
 const start = async () => {
 	try {
-		await connect('mongodb://localhost:27017/clouddisk', () => {
+		connect('mongodb://localhost:27017/clouddisk', () => {
 			console.log(green('Connected to DB'))
 		})
 
