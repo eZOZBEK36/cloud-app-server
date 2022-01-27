@@ -23,7 +23,7 @@ app.use('/static', express.static('static'))
 
 const start = async () => {
 	try {
-		connect('mongodb://localhost:27017/clouddisk', () => {
+		connect(config.get('dbURL'), () => {
 			console.log(green('Connected to DB'))
 		})
 
