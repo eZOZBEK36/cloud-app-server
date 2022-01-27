@@ -31,7 +31,10 @@ app.use('/static', express.static('static'))
 
 const start = async () => {
 	try {
-		connect(config.get('dbURL'), () => {
+		// connect(config.get('dbURL'), () => {
+		// 	console.log('Connected to DB')
+		// })
+		connect('mongodb://127.0.0.1:27017', () => {
 			console.log('Connected to DB')
 		})
 

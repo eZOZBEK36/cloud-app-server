@@ -170,10 +170,11 @@ class FileController {
 	async uploadAvatar (req, res) {
 		try {
 			const file = req.files.file
+			console.log(file)
 			const user = await User.findById(req.user.id)
 			const avatarName = v4() + extname(file.name)
-			if (!existsSync(getStaticPath({ user: user._id }))) {
-				mkdirSync(getStaticPath({ user: user._id }))
+			if (!existsSync(getStaticPath(req, { user: user._id }))) {
+				mkdirSync(getStaticPath(req, { user: user._id }))
 			}
 			file.mv(getStaticPath(req, { user: user._id }) + '/' + avatarName)
 			user.avatar = avatarName
