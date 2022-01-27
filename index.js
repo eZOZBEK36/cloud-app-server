@@ -20,8 +20,8 @@ const { blue, red, gray, green } = chalk
 const app = express()
 const PORT = process.env.PORT ?? config.get('PORT')
 
-app.use(filePath(resolve(__dirname, 'files')))
 app.use(cors)
+app.use(filePath(resolve(__dirname, 'files')))
 app.use(json())
 app.use(fileUpload({}))
 app.use('/api/auth', authRouter)
