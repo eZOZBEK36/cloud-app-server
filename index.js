@@ -27,7 +27,7 @@ app.use(json())
 app.use(fileUpload({}))
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
-app.use('/static', express.static('static'))
+app.use('/static', express.static('files'))
 
 const start = async () => {
 	try {
